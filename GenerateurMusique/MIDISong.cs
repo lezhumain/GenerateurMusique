@@ -120,7 +120,7 @@ namespace GenerateurMusique
         /// <param name="nTrack">The track number (see AddTrack(string)) whose instrument is being specified.</param>
         /// <param name="nChannel">The channel number to assign to the given instrument. MIDI has 16 channels. By default, each track is assigned its own channel from which to operate.</param>
         /// <param name="nGeneralMidiNumber">The number (integer) of the MIDI instrument being assigned. See the MIDI specification for more information on the MIDI standard instruments.</param>
-        public void SetChannelInstrument(int nTrack, int nChannel, int nGeneralMidiNumber)
+        public void SetChannelInstrument(int nGeneralMidiNumber, int nTrack = 0, int nChannel = 0)
         {
             // check to see if the user entered a valid track. If too few tracks exist (the user entered a track number outside of the
             // acceptable range), throw an error.
