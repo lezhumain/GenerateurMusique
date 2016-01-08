@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 using System.Windows.Media;
 
 namespace GenerateurMusique
@@ -11,8 +12,8 @@ namespace GenerateurMusique
         MediaPlayer _mplayer;
         bool _isPlaying;
         string _strFileName;
-        int _nbFile;
-        List<MIDISong> _songs = new List<MIDISong>();
+        public static int NbFile;
+        List<Individu> _songs = new List<Individu>();
 
         public MidiComposer()
         {
@@ -26,6 +27,7 @@ namespace GenerateurMusique
         {
             _mplayer.Stop();
             _mplayer.Close();
+            _isPlaying = false;
         }
 
         // Lancé lorsque le fichier a fini sa lecture, pour le fermer proprement
@@ -35,23 +37,25 @@ namespace GenerateurMusique
             _isPlaying = false;
         }
 
-        private void PlayMIDI(string strFileName)
+        public void PlayMIDI(string strFileName)
         {
+            if(_isPlaying)
+                StopPlayer();
+
             // TODO get nbFile ok
             _mplayer.Open(new Uri(strFileName, UriKind.Relative));
-            _nbFile++;
+            NbFile++;
             _isPlaying = true;
             _mplayer.Play();
         }
 
         // Méthode principale
-        public void CreateAndPlayMusic()
+        public void CreateAndPlayMusic(bool doPlay = true)
         {
             // s'il y a un fichier en cours de lecture on l'arrête 
             if (_isPlaying)
             {
                 StopPlayer();
-                _isPlaying = false;
             }
 
             // Générateur aléatoire
@@ -73,16 +77,20 @@ namespace GenerateurMusique
             for (int i = 0; i < 16; i++)
             {
                 int note = GetRandom(24, 96);
-                song.AddNote(0, 0, note, 12);
+                song.AddNote(note);
             }
 
             // on écrit le fichier
             _strFileName = WriteMIDI(song);
 
-            _songs.Add(song);
+            _songs.Add(new Individu(song));
+            ((MainWindow)Application.Current.MainWindow).Songs.Add(_strFileName);
 
-            // 2) Jouer un fichier MIDI
-            PlayMIDI(_strFileName);
+            if (doPlay)
+            {
+                // 2) Jouer un fichier MIDI
+                PlayMIDI(_strFileName);
+            }
         }
 
         public void Close()
@@ -100,6 +108,13 @@ namespace GenerateurMusique
             }
         }
 
+        /// <summary>
+        /// Creates a single tracked song
+        /// </summary>
+        /// <param name="trackName">Explicit as hell</param>
+        /// <param name="bpm">Bits per minute (tempo)</param>
+        /// <param name="signature"></param>
+        /// <returns></returns>
         public static MIDISong CreateSong(string trackName, int bpm = 150, string signature = null)
         {
             MIDISong song = new MIDISong();
@@ -120,10 +135,10 @@ namespace GenerateurMusique
             return _rand.Next(incMin, exMax);
         }
 
-        public string WriteMIDI(MIDISong song, int nbFile = -1)
+        public static string WriteMIDI(MIDISong song, int nbFile = -1)
         {
             if (nbFile == -1)
-                nbFile = _nbFile;
+                nbFile = NbFile;
 
             // d. Enregistrer le fichier .mid (lisible dans un lecteur externe par exemple)
             // on prépare le flux de sortie

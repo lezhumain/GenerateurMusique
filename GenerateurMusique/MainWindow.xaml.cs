@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,10 +20,13 @@ namespace GenerateurMusique
     public partial class MainWindow : Window
     {
         MidiComposer _composer = new MidiComposer();        
+        public ObservableCollection<string> Songs = new ObservableCollection<string>(); 
 
         public MainWindow()
         {
             InitializeComponent();
+
+            SongList.ItemsSource = Songs;
 
             // On s'abonne à la fermeture du programme pour pouvoir nettoyer le répertoire et les fichiers midi
             Closed += MainWindow_Closed;
@@ -38,6 +42,16 @@ namespace GenerateurMusique
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             _composer.CreateAndPlayMusic();
+        }
+
+        private void SongClick(object sender, SelectionChangedEventArgs e)
+        {
+            string item = e.AddedItems[0] as string;
+
+            if (item == null)
+                return;
+
+            _composer.PlayMIDI(item);
         }
     }
 }

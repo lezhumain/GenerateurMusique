@@ -4,25 +4,32 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 
 namespace GenerateurMusique
 {
     /// <summary>
-    /// MIDISong represents a standard MIDI Song, consisting of multiple Tracks of notes.
+    /// MIDISong represents a standard MIDI Song, consisting of multiple tracks of notes.
     /// </summary>
     public class MIDISong
     {
+        protected int[] _notes;
+
+        // TODO move to track
+        public int[] Notes => _notes;
+
+
         /// <summary>
         /// A song contains a list of MIDITrack objects, representing the song's various tracks.
         /// </summary>
-        private List<MIDITrack> Tracks;
+        protected List<MIDITrack> tracks;
 
         /// <summary>
         /// Asynchronous keeps track of whether the file has multiple tracks with multiple channels per track,
         /// or multiple tracks with a single channel per track. Asynchonous set to "false" indicates a MIDI file format 
         /// of 1, meaning multiple tracks, single channel per track.
         /// </summary>
-        private bool asynchronous;
+        protected bool asynchronous;
 
         /// <summary>
         /// Constructor (standard). Accepts no inputs.
@@ -30,22 +37,63 @@ namespace GenerateurMusique
         public MIDISong()
         {
             // instantiate the list of MIDITrack objects.
-            Tracks = new List<MIDITrack>();
+            tracks = new List<MIDITrack>();
             asynchronous = false;
         }
 
+        public MIDISong(MIDISong song)
+        {
+            // instantiate the list of MIDITrack objects.
+            tracks = new List<MIDITrack>();
+            foreach (MIDITrack track in song.tracks)
+                tracks.Add(track);
+
+            asynchronous = song.asynchronous;
+        }
+
+        public MIDISong(MIDISong song1, MIDISong song2)
+        {
+            int minTracks = 1; /*song1.tracks.Count < song2.tracks.Count
+                ? song1.tracks.Count
+                : song2.tracks.Count*/
+
+            // instantiate the list of MIDITrack objects.
+            tracks = new List<MIDITrack>();
+            for (int i = 0; i < minTracks; i++)
+            {
+                MIDITrack nutrack = new MIDITrack(MidiComposer.NbFile, "Track1");
+                int minNotes = song1.Notes.Length < song2.Notes.Length
+                    ? song1.Notes.Length
+                    : song2.Notes.Length;
+
+                int[] nuNotes = new int[minNotes];
+                for (int i1 = 0; i1 < minNotes; i1++)
+                {
+                    int note = (song2.Notes[i1] + song1.Notes[i1])/2;
+                    nuNotes[i] = note;
+                    AddNote(note);
+                }
+
+                _notes = nuNotes;
+                //tracks.Add(track);
+            }
+
+            // asynchronous only if both parents are
+            asynchronous = song1.asynchronous && song2.asynchronous;
+        }
+
         /// <summary>
-        /// ContainsTrack(string) is a private method allowing the system to check if a 
+        /// ContainsTrack(string) is a protected method allowing the system to check if a 
         /// track of the same name has already been created. Note: this function is case sensitive.
         /// </summary>
         /// <param name="strName">A track name to check against the list of currently-created tracks.</param>
         /// <returns>Boolean: true if strName already exists in the list of tracks, false if strName does not exist.</returns>
-        private bool ContainsTrack(string strName)
+        protected bool ContainsTrack(string strName)
         {
             // go through each one of the tracks and check to see if its name matches strName.
-            for (int x = 0; x < Tracks.Count; x++)
+            for (int x = 0; x < tracks.Count; x++)
             {
-                if (Tracks[x].GetName().Equals(strName))
+                if (tracks[x].GetName().Equals(strName))
                 {
                     return true;
                 }
@@ -69,10 +117,10 @@ namespace GenerateurMusique
             }
 
             // Add a new track to the list of tracks.
-            Tracks.Add(new MIDITrack(Tracks.Count, strName));
+            tracks.Add(new MIDITrack(tracks.Count, strName));
 
             // Return the number of the newly-added track. Note how lists are similar to arrays in that they are zero-justified.
-            return Tracks.Count - 1;
+            return tracks.Count - 1;
         }
 
         /// <summary>
@@ -86,13 +134,13 @@ namespace GenerateurMusique
         {
             // check to see if the user entered a valid track. If too few tracks exist (the user entered a track number outside of the
             // acceptable range), throw an error.
-            if (Tracks.Count < nTrack)
+            if (tracks.Count < nTrack)
             {
                 throw (new Exception("Track does not exist. Input nTrack invalid number."));
             }
 
             // select the applicable track from the list and call its specific SetTimeSignature function.
-            Tracks[nTrack].SetTimeSignature(nTimeSignatureNumerator, nTimeSignatureDenominator);
+            tracks[nTrack].SetTimeSignature(nTimeSignatureNumerator, nTimeSignatureDenominator);
         }
 
         /// <summary>
@@ -104,13 +152,13 @@ namespace GenerateurMusique
         {
             // check to see if the user entered a valid track. If too few tracks exist (the user entered a track number outside of the
             // acceptable range), throw an error.
-            if (Tracks.Count < nTrack)
+            if (tracks.Count < nTrack)
             {
                 throw (new Exception("Track does not exist. Input nTrack invalid number."));
             }
 
             // select the applicable track from the list and call its specific SetTempo function.
-            Tracks[nTrack].SetTempo(nBeatsPerMinute);
+            tracks[nTrack].SetTempo(nBeatsPerMinute);
         }
 
         /// <summary>
@@ -124,7 +172,7 @@ namespace GenerateurMusique
         {
             // check to see if the user entered a valid track. If too few tracks exist (the user entered a track number outside of the
             // acceptable range), throw an error.
-            if (Tracks.Count < nTrack)
+            if (tracks.Count < nTrack)
             {
                 throw (new Exception("Track does not exist. Input nTrack invalid number."));
             }
@@ -137,7 +185,7 @@ namespace GenerateurMusique
             }
 
             // select the applicable track from the list and call its specific SetChannelInstrument function.
-            Tracks[nTrack].SetChannelInstrument(nChannel, nGeneralMidiNumber);
+            tracks[nTrack].SetChannelInstrument(nChannel, nGeneralMidiNumber);
         }
 
         /// <summary>
@@ -155,11 +203,11 @@ namespace GenerateurMusique
         /// 3: 1/16 Note
         /// -1: Rest
         /// </param>
-        public void AddNote(int nTrack, int nChannel, int nMidiNoteNumber, int nDuration)
+        public void AddNote(int nMidiNoteNumber, int nDuration = 12, int nTrack = 0, int nChannel = 0)
         {
             // check to see if the user entered a valid track. If too few tracks exist (the user entered a track number outside of the
             // acceptable range), throw an error.
-            if (Tracks.Count < nTrack)
+            if (tracks.Count < nTrack)
             {
                 throw (new Exception("Track does not exist. Input nTrack invalid number."));
             }
@@ -172,7 +220,8 @@ namespace GenerateurMusique
             }
 
             // select the applicable track from the list and call its specific AddNote function.
-            Tracks[nTrack].AddNote(nChannel, nMidiNoteNumber, nDuration);
+            tracks[nTrack].AddNote(nChannel, nMidiNoteNumber, nDuration);
+            _notes[_notes.Length - 1] = nMidiNoteNumber;
         }
 
         /// <summary>
@@ -196,7 +245,7 @@ namespace GenerateurMusique
         {
             // check to see if the user entered a valid track. If too few tracks exist (the user entered a track number outside of the
             // acceptable range), throw an error.
-            if (Tracks.Count < nTrack)
+            if (tracks.Count < nTrack)
             {
                 throw (new Exception("Track does not exist. Input nTrack invalid number."));
             }
@@ -214,7 +263,7 @@ namespace GenerateurMusique
             asynchronous = true;
 
             // select the applicable track from the list, and call its specific AddNotes() function.
-            Tracks[nTrack].AddNotes(nChannel, nMidiNoteNumber, nDuration);
+            tracks[nTrack].AddNotes(nChannel, nMidiNoteNumber, nDuration);
         }
 
         /// <summary>
@@ -238,7 +287,7 @@ namespace GenerateurMusique
         {
             // check to see if the user entered a valid track. If too few tracks exist (the user entered a track number outside of the
             // acceptable range), throw an error.
-            if (Tracks.Count < nTrack)
+            if (tracks.Count < nTrack)
             {
                 throw (new Exception("Track does not exist. Input nTrack invalid number."));
             }
@@ -251,28 +300,28 @@ namespace GenerateurMusique
             }
 
             // select the applicable track from the list, and call its specific AddNotes() function.
-            Tracks[nTrack].AddNotes(nChannel, nMidiNoteNumber, nDuration);
+            tracks[nTrack].AddNotes(nChannel, nMidiNoteNumber, nDuration);
         }
 
         /// <summary>
         /// DeleteTrack(int nTrack) allows programmers to remove an already-specified track from the list of tracks. NOTE: the track numbers update, as in an ArrayList,
-        /// when DeleteTrack() is called. Therefore, if a track listing contains Track 1, Track 2, and Track 3, and Track 1 is removed via the DeleteTrack() method, Tracks 2 and 3
-        /// are renamed Tracks 1 and 2 to compensate for the removal.
+        /// when DeleteTrack() is called. Therefore, if a track listing contains Track 1, Track 2, and Track 3, and Track 1 is removed via the DeleteTrack() method, tracks 2 and 3
+        /// are renamed tracks 1 and 2 to compensate for the removal.
         /// </summary>
         /// <param name="nTrack">The track number to be deleted.</param>
         public void DeleteTrack(int nTrack)
         {
-            if (Tracks.Count < nTrack)
+            if (tracks.Count < nTrack)
             {
                 throw (new Exception("Track does not exist. Input nTrack invalid number."));
             }
 
-            Tracks.RemoveAt(nTrack);
+            tracks.RemoveAt(nTrack);
 
             // renumber the tracks currently in the list (reduce each by one).
-            for (int x = nTrack; x < Tracks.Count; x++)
+            for (int x = nTrack; x < tracks.Count; x++)
             {
-                Tracks[x].TrackNumber--;
+                tracks[x].TrackNumber--;
             }
         }
 
@@ -303,7 +352,7 @@ namespace GenerateurMusique
 
             // define the format of the file. If only one track, the file will be MIDI format 0.
             // if multiple tracks, the file will be MIDI format 1.
-            if (Tracks.Count > 1)
+            if (tracks.Count > 1)
             {
                 if (asynchronous)
                 {
@@ -319,13 +368,13 @@ namespace GenerateurMusique
                 objWriter.WriteByte(0x00);
             }
 
-            if (Tracks.Count < 0x80)
+            if (tracks.Count < 0x80)
             {
                 objWriter.WriteByte(0x00);
             }
 
             // write out the number of tracks as a variable length quantity.
-            VariableLength.WriteVariableLength(objWriter, (ulong)Tracks.Count);
+            VariableLength.WriteVariableLength(objWriter, (ulong)tracks.Count);
 
             // write out the number of time-ticks (see AddNote() and AddNotes() methods) that define a quarter-note.
             // by design, this is defined to be 12 time-ticks.
@@ -333,10 +382,11 @@ namespace GenerateurMusique
             VariableLength.WriteVariableLength(objWriter, 12);
 
             // go through each track in the list, and output its contents to the file.
-            for (int x = 0; x < Tracks.Count; x++)
+            for (int x = 0; x < tracks.Count; x++)
             {
-                Tracks[x].Save(objWriter);
+                tracks[x].Save(objWriter);
             }
         }
+        
     }
 }

@@ -11,7 +11,7 @@ namespace GenerateurMusique
     /// MIDITrack represents one track of a standard MIDISong file. A MIDI track consists of multiple "Events".
     /// Events can be defined as swqitches of instruments, tempo / time signature settings, and song notes / rests.
     /// </summary>
-    class MIDITrack
+    public class MIDITrack
     {
         private String TrackName;
         public int TrackNumber;
