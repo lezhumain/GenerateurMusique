@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
 
 namespace GenerateurMusique
 {
@@ -13,10 +9,10 @@ namespace GenerateurMusique
     /// </summary>
     public class MIDISong
     {
-        protected int[] _notes;
+        //protected int[] _notes = new int[Individu.NBNOTES];
 
         // TODO move to track
-        public int[] Notes => _notes;
+        //public int[] Notes => _notes;
 
 
         /// <summary>
@@ -51,36 +47,35 @@ namespace GenerateurMusique
             asynchronous = song.asynchronous;
         }
 
-        public MIDISong(MIDISong song1, MIDISong song2)
-        {
-            int minTracks = 1; /*song1.tracks.Count < song2.tracks.Count
-                ? song1.tracks.Count
-                : song2.tracks.Count*/
+        //public MIDISong(MIDISong song1, MIDISong song2)
+        //{
+        //    int minTracks = 1; /*song1.tracks.Count < song2.tracks.Count
+        //        ? song1.tracks.Count
+        //        : song2.tracks.Count*/
 
-            // instantiate the list of MIDITrack objects.
-            tracks = new List<MIDITrack>();
-            for (int i = 0; i < minTracks; i++)
-            {
-                MIDITrack nutrack = new MIDITrack(MidiComposer.NbFile, "Track1");
-                int minNotes = song1.Notes.Length < song2.Notes.Length
-                    ? song1.Notes.Length
-                    : song2.Notes.Length;
+        //    // instantiate the list of MIDITrack objects.
+        //    tracks = new List<MIDITrack>();
+        //    for (int i = 0; i < minTracks; i++)
+        //    {
+        //        int minNotes = song1.Notes.Length < song2.Notes.Length
+        //            ? song1.Notes.Length
+        //            : song2.Notes.Length;
 
-                int[] nuNotes = new int[minNotes];
-                for (int i1 = 0; i1 < minNotes; i1++)
-                {
-                    int note = (song2.Notes[i1] + song1.Notes[i1])/2;
-                    nuNotes[i] = note;
-                    AddNote(note);
-                }
+        //        //int[] nuNotes = new int[minNotes];
+        //        for (int i1 = 0; i1 < minNotes; i1++)
+        //        {
+        //            int note = (song2.Notes[i1] + song1.Notes[i1])/2;
+        //            _notes[i] = note;
+        //            AddNote(note);
+        //        }
 
-                _notes = nuNotes;
-                //tracks.Add(track);
-            }
+        //        //_notes = nuNotes;
+        //        //tracks.Add(track);
+        //    }
 
-            // asynchronous only if both parents are
-            asynchronous = song1.asynchronous && song2.asynchronous;
-        }
+        //    // asynchronous only if both parents are
+        //    asynchronous = song1.asynchronous && song2.asynchronous;
+        //}
 
         /// <summary>
         /// ContainsTrack(string) is a protected method allowing the system to check if a 
@@ -111,7 +106,7 @@ namespace GenerateurMusique
         public int AddTrack(string strName)
         {
             // use ContainsTrack(string) to check if the track already exists. If it does not, it can be added.
-            if (ContainsTrack(strName) == true)
+            if (ContainsTrack(strName))
             {
                 throw (new Exception("Track of name " + strName + " already exists."));
             }
@@ -221,7 +216,7 @@ namespace GenerateurMusique
 
             // select the applicable track from the list and call its specific AddNote function.
             tracks[nTrack].AddNote(nChannel, nMidiNoteNumber, nDuration);
-            _notes[_notes.Length - 1] = nMidiNoteNumber;
+            //_notes[_notes.Length - 1] = nMidiNoteNumber;
         }
 
         /// <summary>

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GenerateurMusique
 {
@@ -393,7 +390,7 @@ namespace GenerateurMusique
 
             // if the user selected true for onOff (note pressed), the 0x9X MIDI command must be used.
             // otherwise, the 0x8X MIDI command must be used.
-            if (onOff == true)
+            if (onOff)
             {
                 newByteArray.Add((byte)((0x9 << 4) | (byte)nChannel));
             }

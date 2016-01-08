@@ -1,18 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace GenerateurMusique
 {
     public class Individu
     {
-        private static int nbIndividus = 0;
+        private static int nbIndividus;
         private static short NBNOTES = 16;
         private int[] _notes = new int[NBNOTES];
+        public int[] Notes => _notes;
+
         public short Fitness;
+
+        public string FitnessStr
+        {
+            get { return Fitness.ToString(); }
+            set
+            {
+                short val;
+                if (short.TryParse(value, out val))
+                    Fitness = val;
+                else
+                    Fitness = 0;
+            }
+        }
 
         //private int instrument;
 
@@ -58,7 +68,8 @@ namespace GenerateurMusique
         private void init()
         {
             nbIndividus++;
-            _midiFileName = "File" + nbIndividus;
+            _midiFileName = "Fichier" + nbIndividus + ".mid";
+            Fitness = 0;
         }
 
         public void Mutate()
