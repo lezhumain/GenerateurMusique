@@ -14,27 +14,48 @@ namespace GenerateurMusique
 
         private Individu[] _individus = new Individu[MAXINDIVIDUS];
 
-        public int NbGenerations => 0; // TODO
+        //public int NbGenerations => 0; // TODO
 
-        public Population()
+        public Population(int nbGeneration, Individu[] individus = null)
         {
-            //TODO
+            
+            for (int i = 0; i < MAXINDIVIDUS; i++)
+                _individus[i] = individus == null ? new Individu() : individus[i];
+        }
+
+        public Population(IReadOnlyList<Individu> individus)
+        {
             for (int i = 0; i < MAXINDIVIDUS; i++)
             {
-                //_individus[i] = new Individu();
+                _individus[i] = individus[i];
             }
         }
 
-        public void SelectParents()
+        public Individu GetIndividuAt(int index)
         {
-            //TODO
-            throw new NotImplementedException();
+            return _individus[index];
         }
 
-        public void Survival()
+        public Individu[] GetIndividus()
         {
-            //TODO
-            throw new NotImplementedException();
+            return _individus;
+        }
+
+        //public void SelectParents()
+        //{
+        //    //TODO
+        //    throw new NotImplementedException();
+        //}
+
+        //public void Survival()
+        //{
+        //    //TODO
+        //    throw new NotImplementedException();
+        //}
+
+        public void NextGen()
+        {
+            
         }
     }
 }

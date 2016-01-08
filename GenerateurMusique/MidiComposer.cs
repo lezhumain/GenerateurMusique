@@ -13,7 +13,7 @@ namespace GenerateurMusique
         bool _isPlaying;
         string _strFileName;
         public static int NbFile;
-        List<Individu> _songs = new List<Individu>();
+        //List<OldIndividu> _songs = new List<OldIndividu>();
 
         public MidiComposer()
         {
@@ -50,7 +50,7 @@ namespace GenerateurMusique
         }
 
         // Méthode principale
-        public void CreateAndPlayMusic(bool doPlay = true)
+        public void CreateAndPlayMusic(int[] notes = null, string filename = null, bool doPlay = true)
         {
             // s'il y a un fichier en cours de lecture on l'arrête 
             if (_isPlaying)
@@ -76,15 +76,25 @@ namespace GenerateurMusique
             // Ici 16 notes aléatoire entre 16 et 96 (pour éviter certaines notes trop aigues ou trop graves)
             for (int i = 0; i < 16; i++)
             {
-                int note = GetRandom(24, 96);
+                int note;
+                if (notes == null)
+                {
+                    note = GetRandom(24, 96);
+                }
+                else
+                {
+                    note = notes[i];
+                }
                 song.AddNote(note);
+
             }
 
             // on écrit le fichier
-            _strFileName = WriteMIDI(song);
+            _strFileName = WriteMIDI(song, filename);
 
-            _songs.Add(new Individu(song));
-            ((MainWindow)Application.Current.MainWindow).Songs.Add(_strFileName);
+            //_songs.Add(new OldIndividu(song));
+
+            //((MainWindow)Application.Current.MainWindow).Songs.Add(_strFileName);
 
             if (doPlay)
             {
@@ -135,7 +145,7 @@ namespace GenerateurMusique
             return _rand.Next(incMin, exMax);
         }
 
-        public static string WriteMIDI(MIDISong song, int nbFile = -1)
+        public static string WriteMIDI(MIDISong song, string filename = null, int nbFile = -1)
         {
             if (nbFile == -1)
                 nbFile = NbFile;
@@ -154,7 +164,7 @@ namespace GenerateurMusique
             ms.Close();
 
             // et on écrit le fichier
-            string strFileName = "Fichier" + nbFile + ".mid";
+            string strFileName = filename ?? "Fichier" + nbFile + ".mid";
             FileStream objWriter = File.Create(strFileName);
             objWriter.Write(dst, 0, dst.Length);
             objWriter.Close();
