@@ -140,21 +140,6 @@ namespace GenerateurMusique
             return rnd3 == 0 ? i1 : i2;
         }
 
-        private void Play(object sender, RoutedEventArgs e)
-        {
-            PlayButton.IsEnabled = false;
-
-            if (SongList.SelectedItems.Count != 1)
-                return;
-
-            Individu ind = SongList.SelectedItem as Individu;
-
-            ind?.Play();
-
-
-            PlayButton.IsEnabled = true;
-        }
-
         private void Save(object sender, RoutedEventArgs e)
         {
             SaveButton.IsEnabled = false;
