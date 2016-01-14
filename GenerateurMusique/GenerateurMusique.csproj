@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Generation.cs" />
     <Compile Include="Individu.cs" />
     <Compile Include="MainWindowVM.cs" />
     <Compile Include="MidiComposer.cs" />

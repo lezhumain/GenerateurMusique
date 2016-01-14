@@ -9,14 +9,6 @@
         </Grid.ColumnDefinitions>
 
 
-        <!--<Button Content="Cliquez &#xD;&#xA;pour créer !" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" FontSize="26.667" Height="92" Width="167.24" Click="Button_Click">
-			<Button.Background>
-				<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-					<GradientStop Color="#FF2E48BB" Offset="0"/>
-					<GradientStop Color="#FFBFDCEC" Offset="1"/>
-				</LinearGradientBrush>
-			</Button.Background>
-		</Button>-->
         <Button x:Name="Create" Height="24" Width="100" Margin="117,108,117,256"
                 Click="CreateClick">Créer</Button>
         <Button x:Name="NextGen" Height="24" Width="100" IsEnabled="False"
@@ -26,13 +18,22 @@
                 Click="Save">Enregistrer</Button>
 
         <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
-                      Grid.ColumnSpan="2" Margin="0,0,0,0">
-            <ListView x:Name="SongList" SelectionChanged="SongClick">
+                      Margin="0,0,0,0">
+            <ListView x:Name="GenList">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding MidiFileName}"></TextBlock>
-                            <TextBox Text="{Binding FitnessStr}" MaxLength="2" Width="30" Margin="10,0,0,0"></TextBox>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                            <ListView SelectionChanged="SongClick" ItemsSource="{Binding Individus}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}"></TextBlock>
+                                            <TextBox Text="{Binding FitnessStr}" MaxLength="2" Width="30" Margin="10,0,0,0"></TextBox>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>

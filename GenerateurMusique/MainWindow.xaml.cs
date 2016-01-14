@@ -25,15 +25,18 @@ namespace GenerateurMusique
             }
         }
 
-        MidiComposer _composer = new MidiComposer();        
-        public ObservableCollection<Individu> Songs = new ObservableCollection<Individu>();
+        MidiComposer _composer = new MidiComposer();
+
+
+        public ObservableCollection<Generation> Gens = new ObservableCollection<Generation>();
+
         private Population[] populations = new Population[Population.MAXINDIVIDUS];
 
         public MainWindow()
         {
             InitializeComponent();
 
-            SongList.ItemsSource = Songs;
+            GenList.ItemsSource = Gens;
 
 
 
@@ -55,16 +58,16 @@ namespace GenerateurMusique
 
         private void SongClick(object sender, SelectionChangedEventArgs e)
         {
-            bool check = SongList.SelectedItems.Count == 1;
+            //bool check = SongList.SelectedItems.Count == 1;
 
-            if (SongList.SelectedItems.Count != 1)
-                return;
+            //if (SongList.SelectedItems.Count != 1)
+            //    return;
 
-            Individu ind = SongList.SelectedItem as Individu;
+            //Individu ind = SongList.SelectedItem as Individu;
 
-            ind?.Play();
+            //ind?.Play();
 
-            SaveButton.IsEnabled = check;
+            //SaveButton.IsEnabled = check;
         }
 
         private void CreateClick(object sender, RoutedEventArgs e)
@@ -76,8 +79,9 @@ namespace GenerateurMusique
 
             Individu[] individus = pop.GetIndividus();
 
-            foreach (Individu individu in individus)
-                Songs.Add(individu);
+            Generation gen = new Generation(individus);
+
+            Gens.Add(gen);
 
             NextGen.IsEnabled = true;
         }
@@ -108,12 +112,14 @@ namespace GenerateurMusique
                 }
 
                 newInd.Mutate();
-                Songs.Add(newInd);
+                //Gens.Add(newInd);
                 newPop[i] = newInd;
 
                 NextGen.IsEnabled = true;
             }
 
+            Generation mg = new Generation(newPop);
+            Gens.Add(mg);
             populations[nbPopulation] = new Population(nbPopulation + 1, newPop);
         }
 
@@ -142,35 +148,35 @@ namespace GenerateurMusique
 
         private void Save(object sender, RoutedEventArgs e)
         {
-            SaveButton.IsEnabled = false;
+            //SaveButton.IsEnabled = false;
 
 
-            if (SongList.SelectedItems.Count != 1)
-                return;
+            //if (SongList.SelectedItems.Count != 1)
+            //    return;
 
 
-            Individu selected = SongList.SelectedItem as Individu;
-            if (selected == null)
-                return;
+            //Individu selected = SongList.SelectedItem as Individu;
+            //if (selected == null)
+            //    return;
 
-            FolderBrowserDialog dialog = new FolderBrowserDialog();
-            DialogResult result = dialog.ShowDialog();
-            var path = dialog.SelectedPath;
-            var filename = selected.MidiFileName;
+            //FolderBrowserDialog dialog = new FolderBrowserDialog();
+            //DialogResult result = dialog.ShowDialog();
+            //var path = dialog.SelectedPath;
+            //var filename = selected.MidiFileName;
 
-            try
-            {
-                MidiComposer mc = new MidiComposer();
-                if (!File.Exists(filename))
-                    mc.CreateAndPlayMusic(selected.Notes, selected.MidiFileName, false);
+            //try
+            //{
+            //    MidiComposer mc = new MidiComposer();
+            //    if (!File.Exists(filename))
+            //        mc.CreateAndPlayMusic(selected.Notes, selected.MidiFileName, false);
 
-                File.Copy(filename, path + "\\" + filename);
-                SaveButton.IsEnabled = true;
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine("Erreur: " + exception.Message);
-            }
+            //    File.Copy(filename, path + "\\" + filename);
+            //    SaveButton.IsEnabled = true;
+            //}
+            //catch (Exception exception)
+            //{
+            //    Debug.WriteLine("Erreur: " + exception.Message);
+            //}
         }
     }
 }
