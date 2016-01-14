@@ -56,7 +56,14 @@ namespace GenerateurMusique
         private void SongClick(object sender, SelectionChangedEventArgs e)
         {
             bool check = SongList.SelectedItems.Count == 1;
-            PlayButton.IsEnabled = check;
+
+            if (SongList.SelectedItems.Count != 1)
+                return;
+
+            Individu ind = SongList.SelectedItem as Individu;
+
+            ind?.Play();
+
             SaveButton.IsEnabled = check;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Media;
 
@@ -119,7 +120,15 @@ namespace GenerateurMusique
             IEnumerable<string> files = Directory.EnumerateFiles(path, pattern);
             foreach (string file in files)
             {
-                File.Delete(file);
+                try
+                {
+                    File.Delete(file);
+                }
+                catch (Exception)
+                {
+
+                    Debug.WriteLine("Error lors de la suppression du fichier " + file);
+                }
             }
         }
 

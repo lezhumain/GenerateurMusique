@@ -21,10 +21,7 @@
                 Click="CreateClick">Créer</Button>
         <Button x:Name="NextGen" Height="24" Width="100" IsEnabled="False"
                 Click="NextGenClick" Margin="117,148,117,216">Nvelle génération</Button>
-        <Button x:Name="PlayButton" Height="24" Width="100" Margin="118,190,116,174"
-                IsEnabled="False"
-                Click="Play">Jouer</Button>
-        <Button x:Name="SaveButton" Height="24" Width="100" Margin="118,235,116,129"
+        <Button x:Name="SaveButton" Height="24" Width="100" Margin="184,288,183,275"
                 IsEnabled="False"
                 Click="Save">Enregistrer</Button>
 
