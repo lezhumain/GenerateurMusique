@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media;
 
@@ -11,6 +12,8 @@ namespace GenerateurMusique
         bool _isPlaying;
         string _strFileName;
         public static int NbFile;
+        private static readonly int MAXFILES = 2;
+
         //List<OldIndividu> _songs = new List<OldIndividu>();
 
         public MidiComposer()
@@ -109,7 +112,11 @@ namespace GenerateurMusique
                 StopPlayer();
                 _isPlaying = false;
             }
-            var files = Directory.EnumerateFiles("./", "Fichier*.mid");
+            DeleteFiles();
+        }
+        public static void DeleteFiles(string path= "./", string pattern= "Fichier*.mid")
+        { 
+            IEnumerable<string> files = Directory.EnumerateFiles(path, pattern);
             foreach (string file in files)
             {
                 File.Delete(file);
@@ -160,6 +167,12 @@ namespace GenerateurMusique
                 dst[i] = src[i];
             }
             ms.Close();
+
+            if (nbFile >= MAXFILES)
+            {
+                DeleteFiles();
+                nbFile = 0;
+            }
 
             // et on écrit le fichier
             string strFileName = filename ?? "Fichier" + nbFile + ".mid";
