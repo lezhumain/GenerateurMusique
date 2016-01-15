@@ -6,8 +6,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using GenerateurMusique.Model;
+using GenerateurMusique.ViewModels;
 
-namespace GenerateurMusique
+namespace GenerateurMusique.Views
 {
     public partial class MainWindow : Window
     {

@@ -1,6 +1,7 @@
 ﻿using System.IO;
+using GenerateurMusique.MidiHelper;
 
-namespace GenerateurMusique
+namespace GenerateurMusique.Model
 {
     public class Individu
     {

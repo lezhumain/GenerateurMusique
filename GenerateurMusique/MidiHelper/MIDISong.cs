@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace GenerateurMusique
+namespace GenerateurMusique.MidiHelper
 {
     /// <summary>
     /// MIDISong represents a standard MIDI Song, consisting of multiple tracks of notes.

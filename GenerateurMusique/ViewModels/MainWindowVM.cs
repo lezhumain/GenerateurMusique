@@ -5,8 +5,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using GenerateurMusique.Annotations;
+using GenerateurMusique.MidiHelper;
+using GenerateurMusique.Model;
 
-namespace GenerateurMusique
+namespace GenerateurMusique.ViewModels
 {
     class MainWindowVM : INotifyPropertyChanged
     {
