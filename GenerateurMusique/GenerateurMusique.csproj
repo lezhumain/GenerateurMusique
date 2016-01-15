@@ -55,6 +55,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Generation.cs" />
+    <Compile Include="GenerationControl.xaml.cs">
+      <DependentUpon>GenerationControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Individu.cs" />
     <Compile Include="MainWindowVM.cs" />
     <Compile Include="MidiComposer.cs" />
@@ -64,6 +67,10 @@
     <Compile Include="WindowTest.xaml.cs">
       <DependentUpon>WindowTest.xaml</DependentUpon>
     </Compile>
+    <Page Include="GenerationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

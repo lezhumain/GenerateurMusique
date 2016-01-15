@@ -19,16 +19,16 @@
 
         <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
                       Margin="0,0,0,0">
-            <ListView x:Name="GenList">
+            <ListView x:Name="GenList" ItemsSource="{Binding Gens}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Vertical" Width="500">
                             <TextBlock Text="{Binding Name}"></TextBlock>
-                            <ListView SelectionChanged="SongClick" ItemsSource="{Binding Individus}">
+                            <ListView SelectionChanged="SongClick" ItemsSource="{Binding Individus}" SelectionMode="Single">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Name}"></TextBlock>
+                                            <TextBlock Text="{Binding MidiFileName}"></TextBlock>
                                             <TextBox Text="{Binding FitnessStr}" MaxLength="2" Width="30" Margin="10,0,0,0"></TextBox>
                                         </StackPanel>
                                     </DataTemplate>

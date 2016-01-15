@@ -42,7 +42,9 @@ namespace GenerateurMusique
                 );
             }
 
-            MainList.ItemsSource = Geners;
+            //Liste.ItemsSource = Geners;
+            //this.GenerationControl.Gen = Geners.First();
+            //this.Liste.
         }
     }
 

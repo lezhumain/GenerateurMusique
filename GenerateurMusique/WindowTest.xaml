@@ -7,22 +7,11 @@
         mc:Ignorable="d"
         Title="WindowTest" Height="300" Width="300">
     <Grid>
-        <ListView x:Name="MainList">
+        <!--<ListView ItemsSource="{Binding Geners}">-->
+        <ListView x:Name="Liste">
             <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{Binding GName}"></TextBlock>
-                        <ListView x:Name="InnerList" ItemsSource="{Binding Indivs}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding IName}"></TextBlock>
-                                        <!--<TextBox Text="{Binding FitnessStr}" MaxLength="2" Width="30" Margin="10,0,0,0"></TextBox>-->
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </StackPanel>
+                <DataTemplate x:Name="DDataTemplate">
+                    
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

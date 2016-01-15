@@ -11,33 +11,14 @@ namespace GenerateurMusique
 {
     public partial class MainWindow : Window
     {
-        private int nbPopulation
-        {
-            get
-            {
-                var max = populations.Count();
-                for (int i = 0; i < max; i++)
-                {
-                    if (populations[i] == null)
-                        return i;
-                }
-                return max;
-            }
-        }
-
-        MidiComposer _composer = new MidiComposer();
-
-
-        public ObservableCollection<Generation> Gens = new ObservableCollection<Generation>();
-
-        private Population[] populations = new Population[Population.MAXINDIVIDUS];
+        private MainWindowVM _vm = new MainWindowVM();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            GenList.ItemsSource = Gens;
-
+            //GenList.ItemsSource = Gens;
+            DataContext = _vm;
 
 
             // On s'abonne à la fermeture du programme pour pouvoir nettoyer le répertoire et les fichiers midi
@@ -47,13 +28,13 @@ namespace GenerateurMusique
         // On efface les fichiers .mid que l'on avait créé à la fin du programme
         void MainWindow_Closed(object sender, EventArgs e)
         {
-            _composer.Close();
+            _vm.MainWindow_Closed(sender, e);
         }
 
         // Clic sur le bouton : on lance la création d'un fichier et on le joue
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _composer.CreateAndPlayMusic();
+            _vm.PlayClick(sender, e);
         }
 
         private void SongClick(object sender, SelectionChangedEventArgs e)
@@ -64,24 +45,19 @@ namespace GenerateurMusique
             //    return;
 
             //Individu ind = SongList.SelectedItem as Individu;
+            Individu ind = e.AddedItems[0] as Individu;
 
-            //ind?.Play();
+            ind?.Play();
 
-            //SaveButton.IsEnabled = check;
+            SaveButton.IsEnabled = true;
+            //Debug.WriteLine("ok");
         }
 
         private void CreateClick(object sender, RoutedEventArgs e)
         {
             Create.IsEnabled = false;
 
-            Population pop = new Population(1);
-            populations[0] = pop;
-
-            Individu[] individus = pop.GetIndividus();
-
-            Generation gen = new Generation(individus);
-
-            Gens.Add(gen);
+            _vm.CreateClick(sender, e);
 
             NextGen.IsEnabled = true;
         }
@@ -90,61 +66,12 @@ namespace GenerateurMusique
         {
             NextGen.IsEnabled = false;
 
-            Individu[] newPop = new Individu[Population.MAXINDIVIDUS];
+            _vm.NextGenClick(sender, e);
 
-            for (int i = 0; i < Population.MAXINDIVIDUS; i++)
-            {
-                int rnd = MidiComposer.GetRandom(0, 100);
-                Individu newInd;
-
-                if (rnd < Population.CROSSOVER)
-                {
-                    var parent1 = SelectParent();
-                    var parent2 = SelectParent();
-
-                    newInd = new Individu(parent1, parent2);
-                }
-                else
-                {
-                    var parent = SelectParent();
-
-                    newInd = new Individu(parent);
-                }
-
-                newInd.Mutate();
-                //Gens.Add(newInd);
-                newPop[i] = newInd;
-
-                NextGen.IsEnabled = true;
-            }
-
-            Generation mg = new Generation(newPop);
-            Gens.Add(mg);
-            populations[nbPopulation] = new Population(nbPopulation + 1, newPop);
+            NextGen.IsEnabled = true;
         }
 
-        /// <summary>
-        /// Compare le fitness de 2 individus aleatoires.
-        /// </summary>
-        /// <returns>L'individu ayant le fitness le plus élevé</returns>
-        private Individu SelectParent()
-        {
-            int rnd1 = MidiComposer.GetRandom(0, Population.MAXINDIVIDUS);
-            int rnd2 = MidiComposer.GetRandom(0, Population.MAXINDIVIDUS);
-            int rnd3 = MidiComposer.GetRandom(0, 2);
 
-            Population p = populations[nbPopulation - 1];
-            Individu i1 = p.GetIndividuAt(rnd1);
-            Individu i2 = p.GetIndividuAt(rnd2);
-
-            if (i1.Fitness > i2.Fitness)
-                return i1;
-
-            if (i1.Fitness < i2.Fitness)
-                return i2;
-
-            return rnd3 == 0 ? i1 : i2;
-        }
 
         private void Save(object sender, RoutedEventArgs e)
         {
