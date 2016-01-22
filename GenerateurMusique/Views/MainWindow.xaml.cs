@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
+using GenerateurMusique.MidiHelper;
 using GenerateurMusique.Model;
 using GenerateurMusique.ViewModels;
+using Button = System.Windows.Controls.Button;
 
 namespace GenerateurMusique.Views
 {
@@ -44,20 +49,19 @@ namespace GenerateurMusique.Views
             LoadPopulation.IsEnabled = true;
         }
 
-        private void SongClick(object sender, SelectionChangedEventArgs e)
+        private void SongPlayClick(object sender, RoutedEventArgs routedEventArgs)
         {
-            //bool check = SongList.SelectedItems.Count == 1;
+            ((Button) sender).IsEnabled = false;
 
             //if (SongList.SelectedItems.Count != 1)
             //    return;
 
             //Individu ind = SongList.SelectedItem as Individu;
-            Individu ind = e.AddedItems[0] as Individu;
+            Individu ind = ((Button) sender).DataContext as Individu;
 
             ind?.Play();
 
-            SaveButton.IsEnabled = true;
-            //Debug.WriteLine("ok");
+            ((Button) sender).IsEnabled = true;
         }
 
         private void CreateClick(object sender, RoutedEventArgs e)
@@ -80,7 +84,7 @@ namespace GenerateurMusique.Views
 
 
 
-        private void Save(object sender, RoutedEventArgs e)
+        private void Save(Individu selected)
         {
             //SaveButton.IsEnabled = false;
 
@@ -93,24 +97,24 @@ namespace GenerateurMusique.Views
             //if (selected == null)
             //    return;
 
-            //FolderBrowserDialog dialog = new FolderBrowserDialog();
-            //DialogResult result = dialog.ShowDialog();
-            //var path = dialog.SelectedPath;
-            //var filename = selected.MidiFileName;
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            DialogResult result = dialog.ShowDialog();
+            string path = dialog.SelectedPath;
+            string filename = selected.MidiFileName;
 
-            //try
-            //{
-            //    MidiComposer mc = new MidiComposer();
-            //    if (!File.Exists(filename))
-            //        mc.CreateAndPlayMusic(selected.Notes, selected.MidiFileName, false);
+            try
+            {
+                MidiComposer mc = new MidiComposer();
+                if (!File.Exists(filename))
+                    mc.CreateAndPlayMusic(selected.Notes, selected.MidiFileName, false);
 
-            //    File.Copy(filename, path + "\\" + filename);
-            //    SaveButton.IsEnabled = true;
-            //}
-            //catch (Exception exception)
-            //{
-            //    Debug.WriteLine("Erreur: " + exception.Message);
-            //}
+                File.Copy(filename, path + "\\" + filename);
+                //SaveButton.IsEnabled = true;
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine("Erreur: " + exception.Message);
+            }
         }
 
         private void LoadPopulation_Click(object sender, RoutedEventArgs e)
@@ -122,6 +126,18 @@ namespace GenerateurMusique.Views
 
             SavePopulation.IsEnabled = true;
             LoadPopulation.IsEnabled = true;
+        }
+
+        private void SaveDisSong(object sender, RoutedEventArgs e)
+        {
+            Button bSender = sender as Button;
+
+            Individu cont = bSender?.DataContext as Individu;
+
+            if (cont == null)
+                return;
+
+            Save(cont);
         }
     }
 }

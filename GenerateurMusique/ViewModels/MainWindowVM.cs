@@ -15,31 +15,19 @@ namespace GenerateurMusique.ViewModels
 {
     class MainWindowVM : INotifyPropertyChanged
     {
-        //private int nbPopulation
-        //{
-        //    get
-        //    {
-        //        var max = populations.Count();
-        //        for (int i = 0; i < max; i++)
-        //        {
-        //            if (populations[i] == null)
-        //                return i;
-        //        }
-        //        return max;
-        //    }
-        //}
-
         MidiComposer _composer = new MidiComposer();
 
 
         public ObservableCollection<Generation> Gens { get; set; }
 
         //private Population[] populations = new Population[Population.MAXINDIVIDUS];
-
+        private bool _saveFileExists;
+        public bool SaveFileExists { get { return _saveFileExists; } set { _saveFileExists = value; OnPropertyChanged(nameof(SaveFileExists)); } }
 
         public MainWindowVM()
         {
             Gens = new ObservableCollection<Generation>();
+            SaveFileExists = false;
         }
 
         public void MainWindow_Closed(object sender, EventArgs e)
@@ -88,14 +76,14 @@ namespace GenerateurMusique.ViewModels
 
                 if (rnd < Population.CROSSOVER)
                 {
-                    var parent1 = SelectParent();
-                    var parent2 = SelectParent();
+                    Individu parent1 = SelectParent();
+                    Individu parent2 = SelectParent();
 
                     newInd = new Individu(parent1, parent2);
                 }
                 else
                 {
-                    var parent = SelectParent();
+                    Individu parent = SelectParent();
 
                     newInd = new Individu(parent);
                 }
@@ -153,19 +141,19 @@ namespace GenerateurMusique.ViewModels
             {
                 serializer.Serialize(writer, lol);
             }
-
+            SaveFileExists = true;
         }
         public void LoadPopulation(string filename)
         {
-            var xr = new XmlTextReader(filename);
-            var xs = new XmlSerializer(typeof(Generation[]));
+            XmlTextReader xr = new XmlTextReader(filename);
+            XmlSerializer xs = new XmlSerializer(typeof(Generation[]));
 
 
-            var lol = ((Generation[])xs.Deserialize(xr));
+            Generation[] lol = ((Generation[])xs.Deserialize(xr));
 
 
             Gens.Clear();
-            foreach (var gen in lol)
+            foreach (Generation gen in lol)
                 Gens.Add(gen);
         }
     }

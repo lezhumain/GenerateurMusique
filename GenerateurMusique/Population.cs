@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using GenerateurMusique.Model;
 
 namespace GenerateurMusique
 {
@@ -67,10 +68,9 @@ namespace GenerateurMusique
         }
         public void LoadPopulation(string filename)
         {
-            var xr = new XmlTextReader(filename);
-            var xs = new XmlSerializer(typeof(Individu[]));
+            XmlTextReader xr = new XmlTextReader(filename);
+            XmlSerializer xs = new XmlSerializer(typeof(Individu[]));
             this._individus = (Individu[])xs.Deserialize(xr);
         }
-    }
     }
 }

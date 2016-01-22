@@ -37,6 +37,9 @@ namespace GenerateurMusique.Controls
             DataContext = this;
         }
 
+
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
