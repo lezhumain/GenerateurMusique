@@ -9,7 +9,7 @@ namespace GenerateurMusique
     {
         public static readonly short MAXINDIVIDUS = 10;
         public static readonly short MUTARATE = 10;
-        public static readonly short CROSSOVER = 5;
+        public static readonly short CROSSOVER = 30;
 
         private Individu[] _individus = new Individu[MAXINDIVIDUS];
 
@@ -72,5 +72,5 @@ namespace GenerateurMusique
             this._individus = (Individu[])xs.Deserialize(xr);
         }
     }
-}
+    }
 }

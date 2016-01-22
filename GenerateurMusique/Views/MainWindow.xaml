@@ -1,0 +1,51 @@
+﻿<Window x:Class="GenerateurMusique.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="618" Width="709">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+
+        <Button x:Name="Create" Height="24" Width="100" Margin="117,108,117,256"
+                Click="CreateClick">Créer</Button>
+        <Button x:Name="NextGen" Height="24" Width="100" IsEnabled="False"
+                Click="NextGenClick" Margin="117,148,117,216">Nvelle génération</Button>
+        <Button x:Name="SaveButton" Height="24" Width="100" Margin="184,288,183,275"
+                IsEnabled="False"
+                Click="Save">Enregistrer</Button>
+
+        <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                      Margin="0,0,0,0">
+            <ListView x:Name="GenList" ItemsSource="{Binding Gens}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Name}" Background="Red"></TextBlock>
+                            <ListView SelectionChanged="SongClick" ItemsSource="{Binding Individus}" SelectionMode="Single">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding MidiFileName}"></TextBlock>
+                                            <TextBox Text="{Binding FitnessStr}" MaxLength="2" Width="30" Margin="10,0,0,0"></TextBox>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+        <Button x:Name="SavePopulation" Height="24" Width="100" Margin="184,331,183,232"
+        	IsEnabled="true"
+        	Click="SavePopulation_Click" Content="Sauver la population"/>
+        <Button x:Name="LoadPopulation" Height="24" Width="100" Margin="184,372,183,191"
+        	IsEnabled="true"
+        	Click="LoadPopulation_Click" Content="Load la population"/>
+
+
+    </Grid>
+</Window>

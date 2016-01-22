@@ -1,16 +1,25 @@
 ﻿using System.IO;
+using GenerateurMusique.MidiHelper;
+using System;
+using System.Xml.Serialization;
 
-namespace GenerateurMusique
+namespace GenerateurMusique.Model
 {
+    [Serializable]
     public class Individu
     {
+
         private static int nbIndividus;
         private static short NBNOTES = 16;
         private int[] _notes = new int[NBNOTES];
-        public int[] Notes => _notes;
-
+        [XmlAttribute("Notes")]
+        public int[] Notes
+        {
+            get { return _notes; }
+            set { _notes = value; }
+        }
+        [XmlAttribute("Fitness")]
         public short Fitness;
-
         public string FitnessStr
         {
             get { return Fitness.ToString(); }
@@ -27,8 +36,12 @@ namespace GenerateurMusique
         //private int instrument;
 
         private string _midiFileName;
-        public string MidiFileName => _midiFileName;
-
+        [XmlAttribute("MidiFileName")]
+        public string MidiFileName
+        {
+            get { return _midiFileName; }
+            set { _midiFileName = value; }
+        }
         public Individu(Individu papa, Individu maman)
         {
             int rnd = MidiComposer.GetRandom(0, NBNOTES);
