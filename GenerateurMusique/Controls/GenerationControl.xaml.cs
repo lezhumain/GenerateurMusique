@@ -1,46 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using GenerateurMusique.Annotations;
+using GenerateurMusique.Model;
 
-namespace GenerateurMusique
+namespace GenerateurMusique.Controls
 {
     /// <summary>
     /// Logique d'interaction pour GenerationControl.xaml
     /// </summary>
     public partial class GenerationControl : INotifyPropertyChanged
     {
-        private GenerationTest _gen;
+        private Generation _gen;
 
-        public GenerationTest Gen
+        public Generation Gen
         {
             get { return _gen; }
             set { _gen = value;
                 Panel.DataContext = _gen;
-                Liste.ItemsSource = _gen.Indivs;
+                Liste.ItemsSource = _gen.Individus;
             }
         }
 
-        public GenerationControl(ObservableCollection<GenerationTest> geners)
+        public GenerationControl(ObservableCollection<Generation> geners)
         {
             InitializeComponent();
             DataContext = this;
 
-            //foreach (GenerationTest gener in geners)
+            //foreach (Generation gener in geners)
             //    Geners.Add(gener);
         }
 

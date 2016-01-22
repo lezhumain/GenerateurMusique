@@ -62,13 +62,13 @@ namespace GenerateurMusique.ViewModels
 
         public void CreateClick(object sender, RoutedEventArgs routedEventArgs)
         {
-            Population pop = new Population(1);
-            populations[0] = pop;
+            Individu[] individus = new Individu[Population.MAXINDIVIDUS];
 
-            Individu[] individus = pop.GetIndividus();
+            for (int i = 0; i < Population.MAXINDIVIDUS; i++)
+                individus[i] = new Individu();
 
+            
             Generation gen = new Generation(individus);
-
             Gens.Add(gen);
         }
 
@@ -96,14 +96,20 @@ namespace GenerateurMusique.ViewModels
                 }
 
                 newInd.Mutate();
-                //Gens.Add(newInd);
                 newPop[i] = newInd;
 
             }
 
             Generation mg = new Generation(newPop);
+
+            Survival();
             Gens.Add(mg);
             //populations[nbPopulation] = new Population(nbPopulation + 1, newPop);
+        }
+
+        private void Survival()
+        {
+            Gens.RemoveAt(0);
         }
 
         /// <summary>

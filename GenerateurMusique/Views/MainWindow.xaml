@@ -22,8 +22,8 @@
             <ListView x:Name="GenList" ItemsSource="{Binding Gens}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Vertical" Width="500">
-                            <TextBlock Text="{Binding Name}"></TextBlock>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Name}" Background="Red"></TextBlock>
                             <ListView SelectionChanged="SongClick" ItemsSource="{Binding Individus}" SelectionMode="Single">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
