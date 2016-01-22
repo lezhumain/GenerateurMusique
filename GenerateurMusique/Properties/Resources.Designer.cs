@@ -59,5 +59,14 @@ namespace GenerateurMusique.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à MainWindowVM.XmlFile.
+        /// </summary>
+        public static string XmlFile {
+            get {
+                return ResourceManager.GetString("XmlFile", resourceCulture);
+            }
+        }
     }
 }

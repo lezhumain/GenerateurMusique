@@ -1,18 +1,29 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Xml.Serialization;
 
 namespace GenerateurMusique.Model
 {
+    [Serializable]
     public class Generation
     {
         public ObservableCollection<Individu> Individus { get; set; }
 
         private static int generationCpt = 0;
+
         private int _numGeneration;
+        [XmlAttribute("NumGeneration")]
+        public  int NumGeneration
+        {
+            get { return _numGeneration;}
+            set { _numGeneration = value; }
+        }
 
         public string Name => "Génération" + _numGeneration;
 
 
-        public Generation(Individu[] indivs)
+        public Generation(IEnumerable<Individu> indivs)
         {
             _numGeneration = generationCpt;
 
@@ -27,6 +38,11 @@ namespace GenerateurMusique.Model
             _numGeneration = generationCpt;
             Individus = new ObservableCollection<Individu>();
             generationCpt++;
+        }
+
+        public static void SetCptGen(int i)
+        {
+            generationCpt = i;
         }
     }
 }

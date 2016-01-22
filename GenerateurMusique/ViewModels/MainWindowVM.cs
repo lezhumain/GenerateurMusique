@@ -9,12 +9,17 @@ using GenerateurMusique.MidiHelper;
 using GenerateurMusique.Model;
 using System.Xml.Serialization;
 using System.IO;
+using System.Reflection;
+using System.Resources;
 using System.Xml;
 
 namespace GenerateurMusique.ViewModels
 {
     class MainWindowVM : INotifyPropertyChanged
     {
+        public static readonly string XmlFile = "save.xml";
+
+
         MidiComposer _composer = new MidiComposer();
 
 
@@ -24,10 +29,14 @@ namespace GenerateurMusique.ViewModels
         private bool _saveFileExists;
         public bool SaveFileExists { get { return _saveFileExists; } set { _saveFileExists = value; OnPropertyChanged(nameof(SaveFileExists)); } }
 
+
         public MainWindowVM()
         {
             Gens = new ObservableCollection<Generation>();
-            SaveFileExists = false;
+
+
+            if (File.Exists(MainWindowVM.XmlFile))
+                SaveFileExists = true;
         }
 
         public void MainWindow_Closed(object sender, EventArgs e)
@@ -150,7 +159,8 @@ namespace GenerateurMusique.ViewModels
 
 
             Generation[] lol = ((Generation[])xs.Deserialize(xr));
-
+            int test = lol.First().NumGeneration + 1;
+            Generation.SetCptGen(lol.First().NumGeneration + 1);
 
             Gens.Clear();
             foreach (Generation gen in lol)

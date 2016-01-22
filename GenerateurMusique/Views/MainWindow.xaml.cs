@@ -43,7 +43,7 @@ namespace GenerateurMusique.Views
             SavePopulation.IsEnabled = false;
             LoadPopulation.IsEnabled = false;
 
-            _vm.SavePopulation("lol.xml");
+            _vm.SavePopulation(MainWindowVM.XmlFile);
 
             SavePopulation.IsEnabled = true;
             LoadPopulation.IsEnabled = true;
@@ -122,7 +122,7 @@ namespace GenerateurMusique.Views
             SavePopulation.IsEnabled = false;
             LoadPopulation.IsEnabled = false;
 
-            _vm.LoadPopulation("lol.xml");
+            _vm.LoadPopulation(MainWindowVM.XmlFile);
 
             SavePopulation.IsEnabled = true;
             LoadPopulation.IsEnabled = true;

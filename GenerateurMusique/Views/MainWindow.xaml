@@ -17,7 +17,8 @@
             </StackPanel.Resources>
             <Button x:Name="Create" Height="24" Width="100"
                     Click="CreateClick">Créer</Button>
-            <Button x:Name="NextGen" Height="24" Width="100" IsEnabled="False"
+            <Button x:Name="NextGen" Height="24" Width="100"
+                    IsEnabled="{Binding Gens.Count}"
             	    Click="NextGenClick" Content="Nvelle génération"/>
             <Button x:Name="SavePopulation" Height="24" Width="100"
             	IsEnabled="{Binding Gens.Count}"
