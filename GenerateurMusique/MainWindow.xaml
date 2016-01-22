@@ -22,7 +22,7 @@
         <Button x:Name="NextGen" Height="24" Width="100" IsEnabled="False"
                 Click="NextGenClick" Margin="117,148,117,216">Nvelle génération</Button>
         <Button x:Name="SaveButton" Height="24" Width="100" Margin="184,288,183,275"
-                IsEnabled="False"
+                IsEnabled="True"
                 Click="Save">Enregistrer</Button>
 
         <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"

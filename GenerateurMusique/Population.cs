@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace GenerateurMusique
 {
@@ -53,5 +56,21 @@ namespace GenerateurMusique
         {
             
         }
+        public void SavePopulation(string fileName)
+        {
+            XmlSerializer serializer = new XmlSerializer(this._individus.GetType());
+            using (StreamWriter writer = new StreamWriter(fileName))
+            {
+                serializer.Serialize(writer, this._individus);
+            }
+
+        }
+        public void LoadPopulation(string filename)
+        {
+            var xr = new XmlTextReader(filename);
+            var xs = new XmlSerializer(typeof(Individu[]));
+            this._individus = (Individu[])xs.Deserialize(xr);
+        }
     }
+}
 }
