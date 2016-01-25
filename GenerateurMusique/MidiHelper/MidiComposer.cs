@@ -126,7 +126,6 @@ namespace GenerateurMusique.MidiHelper
                 }
                 catch (Exception)
                 {
-
                     Debug.WriteLine("Error lors de la suppression du fichier " + file);
                 }
             }

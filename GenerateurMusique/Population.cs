@@ -31,32 +31,6 @@ namespace GenerateurMusique
             }
         }
 
-        public Individu GetIndividuAt(int index)
-        {
-            return _individus[index];
-        }
-
-        public Individu[] GetIndividus()
-        {
-            return _individus;
-        }
-
-        //public void SelectParents()
-        //{
-        //    //TODO
-        //    throw new NotImplementedException();
-        //}
-
-        //public void Survival()
-        //{
-        //    //TODO
-        //    throw new NotImplementedException();
-        //}
-
-        public void NextGen()
-        {
-            
-        }
         public void SavePopulation(string fileName)
         {
             XmlSerializer serializer = new XmlSerializer(this._individus.GetType());

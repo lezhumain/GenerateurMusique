@@ -34,10 +34,10 @@ namespace GenerateurMusique.Views
         }
 
         // Clic sur le bouton : on lance la création d'un fichier et on le joue
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            _vm.PlayClick(sender, e);
-        }
+        //private void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    _vm.PlayClick(sender, e);
+        //}
         private void SavePopulation_Click(object sender, RoutedEventArgs e)
         {
             SavePopulation.IsEnabled = false;
@@ -53,10 +53,6 @@ namespace GenerateurMusique.Views
         {
             ((Button) sender).IsEnabled = false;
 
-            //if (SongList.SelectedItems.Count != 1)
-            //    return;
-
-            //Individu ind = SongList.SelectedItem as Individu;
             Individu ind = ((Button) sender).DataContext as Individu;
 
             ind?.Play();
@@ -84,19 +80,8 @@ namespace GenerateurMusique.Views
 
 
 
-        private void Save(Individu selected)
+        private static void Save(Individu selected)
         {
-            //SaveButton.IsEnabled = false;
-
-
-            //if (SongList.SelectedItems.Count != 1)
-            //    return;
-
-
-            //Individu selected = SongList.SelectedItem as Individu;
-            //if (selected == null)
-            //    return;
-
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             DialogResult result = dialog.ShowDialog();
             string path = dialog.SelectedPath;
@@ -138,6 +123,16 @@ namespace GenerateurMusique.Views
                 return;
 
             Save(cont);
+        }
+
+        private void Close(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Help(object sender, RoutedEventArgs e)
+        {
+            // TODO Henri la famille: afficher une petite fenêtre qui explique comment on se sert de l'app
         }
     }
 }
