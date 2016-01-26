@@ -132,7 +132,8 @@ namespace GenerateurMusique.Views
 
         private void Help(object sender, RoutedEventArgs e)
         {
-            // TODO Henri la famille: afficher une petite fenêtre qui explique comment on se sert de l'app
+            Help fenetre = new Help();
+            fenetre.Show();
         }
     }
 }
