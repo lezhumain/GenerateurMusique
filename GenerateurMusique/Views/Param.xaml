@@ -26,9 +26,9 @@
         <Label x:Name="label_Copy2" Content="Nombre de note par individu" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Height="26" Width="176"/>
 
 
-        <TextBox PreviewTextInput="PreviewTextInput" Grid.Row="0" Grid.Column="2" Height="26" Width="30" MaxLength="3"/>
-        <TextBox PreviewTextInput="PreviewTextInput" Grid.Row="1" Grid.Column="2" Height="26" Width="30" MaxLength="3"/>
-        <TextBox PreviewTextInput="PreviewTextInput" Grid.Row="2" Grid.Column="2" Height="26" Width="30" MaxLength="3"/>
-        <TextBox PreviewTextInput="PreviewTextInput" Grid.Row="3" Grid.Column="2" Height="26" Width="30" MaxLength="3"/>
+        <TextBox PreviewTextInput="PreviewTextInput" Grid.Row="0" Grid.Column="2" Height="26" Width="30" MaxLength="3" Text="{Binding Crossover}"/>
+        <TextBox PreviewTextInput="PreviewTextInput" Grid.Row="1" Grid.Column="2" Height="26" Width="30" MaxLength="3" Text="{Binding Mutarate}"/>
+        <TextBox PreviewTextInput="PreviewTextInput" Grid.Row="2" Grid.Column="2" Height="26" Width="30" MaxLength="3" Text="{Binding MaxIndividus}"/>
+        <TextBox PreviewTextInput="PreviewTextInput" Grid.Row="3" Grid.Column="2" Height="26" Width="30" MaxLength="3" Text="{Binding MaxNotes}"/>
     </Grid>
 </Window>

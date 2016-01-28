@@ -1,52 +1,52 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Serialization;
+using GenerateurMusique.Annotations;
 using GenerateurMusique.Model;
 
 namespace GenerateurMusique
 {
-    public class Population
+    public class Population : INotifyPropertyChanged
     {
-        public static readonly short MAXINDIVIDUS = 10;
-        public static readonly short MUTARATE = 10;
-        public static readonly short CROSSOVER = 30; 
+        public static short MAXINDIVIDUS = 10;
+        public static short MUTARATE = 10;
+        public static short CROSSOVER = 30;
+        public static short MAXNOTES = 16;
 
-       // private Individu[] _individus = new Individu[MAXINDIVIDUS];
+        public short MaxIndividus
+        {
+            get { return MAXINDIVIDUS; }
+            set { MAXINDIVIDUS = value; OnPropertyChanged(nameof(MaxIndividus));  }
+        }
+        public short Mutarate
+        {
+            get { return MAXINDIVIDUS; }
+            set { MAXINDIVIDUS = value; OnPropertyChanged(nameof(Mutarate)); }
+        }
+        public short Crossover
+        {
+            get { return CROSSOVER; }
+            set { CROSSOVER = value; OnPropertyChanged(nameof(Crossover)); }
+        }
+        public short MaxNotes
+        {
+            get { return MAXNOTES; }
+            set { MAXNOTES = value; OnPropertyChanged(nameof(MaxNotes)); }
+        }
 
-        //public int NbGenerations => 0; // TODO
 
-        //public Population(int nbGeneration, Individu[] individus = null)
-        //{
-            
-        //    for (int i = 0; i < MAXINDIVIDUS; i++)
-        //        _individus[i] = individus == null
-        //            ? new Individu()
-        //            : individus[i];
-        //}
 
-        //public Population(IReadOnlyList<Individu> individus)
-        //{
-        //    for (int i = 0; i < MAXINDIVIDUS; i++)
-        //    {
-        //        _individus[i] = individus[i];
-        //    }
-        //}
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        //public void SavePopulation(string fileName)
-        //{
-        //    XmlSerializer serializer = new XmlSerializer(this._individus.GetType());
-        //    using (StreamWriter writer = new StreamWriter(fileName))
-        //    {
-        //        serializer.Serialize(writer, this._individus);
-        //    }
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
-        //}
-        //public void LoadPopulation(string filename)
-        //{
-        //    XmlTextReader xr = new XmlTextReader(filename);
-        //    XmlSerializer xs = new XmlSerializer(typeof(Individu[]));
-        //    this._individus = (Individu[])xs.Deserialize(xr);
-        //}
+        // TODO: confirm + reset pop
     }
 }

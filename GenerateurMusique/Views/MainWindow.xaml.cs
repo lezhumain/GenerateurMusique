@@ -14,6 +14,7 @@ namespace GenerateurMusique.Views
     public partial class MainWindow : Window
     {
         private MainWindowVM _vm = new MainWindowVM();
+        public Population _params = new Population();
 
         public MainWindow()
         {
@@ -143,7 +144,8 @@ namespace GenerateurMusique.Views
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Parametres fenetre = new Parametres();
+            Parametres fenetre = new Parametres {DataContext = _params};
+
             fenetre.Show();
         }
     }
