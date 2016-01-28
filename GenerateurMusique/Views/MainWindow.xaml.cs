@@ -162,7 +162,7 @@ namespace GenerateurMusique.Views
 
         private void ShowConfirm()
         {
-            string sMessageBoxText = "Si vous avez changé le nombre de notes ou le nombre d'individus, l'application va recommencer.\n Voulez-vous continuer?";
+            string sMessageBoxText = "Si vous avez changé le nombre de notes ou le nombre d'individus, la population sera remise à 0.\n Voulez-vous continuer?";
             string sCaption = "Confirmation";
 
             MessageBoxButton btnMessageBox = MessageBoxButton.YesNo;
