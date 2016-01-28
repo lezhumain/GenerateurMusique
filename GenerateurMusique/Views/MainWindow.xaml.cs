@@ -47,6 +47,8 @@ namespace GenerateurMusique.Views
 
             SavePopulation.IsEnabled = true;
             LoadPopulation.IsEnabled = true;
+
+            System.Windows.MessageBox.Show("Vous avez bien sauvegardé.");
         }
 
         private void SongPlayClick(object sender, RoutedEventArgs routedEventArgs)
@@ -111,6 +113,9 @@ namespace GenerateurMusique.Views
 
             SavePopulation.IsEnabled = true;
             LoadPopulation.IsEnabled = true;
+
+
+            System.Windows.MessageBox.Show("Bien chargé la famille ;)");
         }
 
         private void SaveDisSong(object sender, RoutedEventArgs e)

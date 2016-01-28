@@ -10,6 +10,11 @@ namespace GenerateurMusique.Model
     {
 
         private static int nbIndividus;
+        public static int NbIndividus
+        {
+            get { return nbIndividus; }
+            set { nbIndividus = value; }
+        }
         private static short NBNOTES = 16;
         private int[] _notes = new int[NBNOTES];
         [XmlAttribute("Notes")]
@@ -56,7 +61,7 @@ namespace GenerateurMusique.Model
 
             init();
         }
-
+        // reset a nouvelle numGEn * 10
         public Individu(Individu parent)
         {
             //TODO
@@ -72,7 +77,7 @@ namespace GenerateurMusique.Model
             // Chaque note est comprise entre 0 et 127 (12 correspond au type de note, fixe ici à des 1/4)
             // L'équivalence avec les notes / octaves est disponible ici : https://andymurkin.files.wordpress.com/2012/01/midi-int-midi-note-no-chart.jpg
             // Ici 16 notes aléatoire entre 16 et 96 (pour éviter certaines notes trop aigues ou trop graves)
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < NBNOTES; i++)
                 _notes[i] = MidiComposer.GetRandom(24, 96);
 
             init();

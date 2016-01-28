@@ -11,6 +11,11 @@ namespace GenerateurMusique.Model
         public ObservableCollection<Individu> Individus { get; set; }
 
         private static int generationCpt = 0;
+        public static int GenerationCpt
+        {
+            get { return generationCpt; }
+            set { generationCpt = value; }
+        }
 
         private int _numGeneration;
         [XmlAttribute("NumGeneration")]

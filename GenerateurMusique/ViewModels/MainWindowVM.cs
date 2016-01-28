@@ -122,7 +122,7 @@ namespace GenerateurMusique.ViewModels
         {
             int rnd1 = MidiComposer.GetRandom(0, Population.MAXINDIVIDUS);
             int rnd2 = MidiComposer.GetRandom(0, Population.MAXINDIVIDUS);
-            int rnd3 = MidiComposer.GetRandom(0, 2);
+            
 
             Generation g = Gens.Last();
             Individu i1 = g.Individus[rnd1];
@@ -130,11 +130,8 @@ namespace GenerateurMusique.ViewModels
 
             if (i1.Fitness > i2.Fitness)
                 return i1;
-
-            if (i1.Fitness < i2.Fitness)
+            else
                 return i2;
-
-            return rnd3 == 0 ? i1 : i2;
         }
 
         
@@ -160,7 +157,9 @@ namespace GenerateurMusique.ViewModels
 
             Generation[] lol = ((Generation[])xs.Deserialize(xr));
             int test = lol.First().NumGeneration + 1;
-            Generation.SetCptGen(lol.First().NumGeneration + 1);
+            Generation.GenerationCpt = test;
+            Individu.NbIndividus = test * 10;
+
 
             Gens.Clear();
             foreach (Generation gen in lol)
