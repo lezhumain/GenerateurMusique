@@ -140,5 +140,11 @@ namespace GenerateurMusique.Views
             Help fenetre = new Help();
             fenetre.Show();
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Parametres fenetre = new Parametres();
+            fenetre.Show();
+        }
     }
 }
