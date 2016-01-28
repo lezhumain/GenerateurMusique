@@ -13,6 +13,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -20,15 +21,19 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Label x:Name="label" Content="Taux de crossover" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Height="26" Width="111"/>
+        <Label x:Name="label" Content="Taux de  crossover" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Height="26" Width="111"/>
         <Label x:Name="label_Copy" Content="Taux de mutation" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Height="26" Width="111"/>
-        <Label x:Name="label_Copy1" Content="Nombre d'individu" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Height="26" Width="111"/>
-        <Label x:Name="label_Copy2" Content="Nombre de note par individu" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Height="26" Width="176"/>
+        <Label x:Name="label_Copy1" Content="Nombre d'individus" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Height="26" Width="111"/>
+        <Label x:Name="label_Copy2" Content="Nombre de notes par individu" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" Height="26" Width="176"/>
 
 
         <TextBox PreviewTextInput="PreviewTextInput" Grid.Row="0" Grid.Column="2" Height="26" Width="30" MaxLength="3" Text="{Binding Crossover}"/>
         <TextBox PreviewTextInput="PreviewTextInput" Grid.Row="1" Grid.Column="2" Height="26" Width="30" MaxLength="3" Text="{Binding Mutarate}"/>
         <TextBox PreviewTextInput="PreviewTextInput" Grid.Row="2" Grid.Column="2" Height="26" Width="30" MaxLength="3" Text="{Binding MaxIndividus}"/>
         <TextBox PreviewTextInput="PreviewTextInput" Grid.Row="3" Grid.Column="2" Height="26" Width="30" MaxLength="3" Text="{Binding MaxNotes}"/>
+        <Button x:Name="ValiderButton" Content="Valider" Grid.Column="1"
+                HorizontalAlignment="Left" Margin="10,40,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="AnnulerButton" Content="Annuler" Grid.Column="1"
+                HorizontalAlignment="Right" Margin="0,40,15,0" Grid.Row="4" VerticalAlignment="Top" Width="75"/>
     </Grid>
 </Window>

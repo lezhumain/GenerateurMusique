@@ -7,7 +7,9 @@ using System.Windows.Forms;
 using GenerateurMusique.MidiHelper;
 using GenerateurMusique.Model;
 using GenerateurMusique.ViewModels;
+using Application = System.Windows.Forms.Application;
 using Button = System.Windows.Controls.Button;
+using MessageBox = System.Windows.MessageBox;
 
 namespace GenerateurMusique.Views
 {
@@ -15,6 +17,7 @@ namespace GenerateurMusique.Views
     {
         private MainWindowVM _vm = new MainWindowVM();
         public Population _params = new Population();
+        private Parametres fenetre;
 
         public MainWindow()
         {
@@ -65,20 +68,20 @@ namespace GenerateurMusique.Views
 
         private void CreateClick(object sender, RoutedEventArgs e)
         {
-            Create.IsEnabled = false;
+            //Create.IsEnabled = false;
 
             _vm.CreateClick(sender, e);
 
-            NextGen.IsEnabled = true;
+            //NextGen.IsEnabled = true;
         }
 
         private void NextGenClick(object sender, RoutedEventArgs e)
         {
-            NextGen.IsEnabled = false;
+            //NextGen.IsEnabled = false;
 
             _vm.NextGenClick(sender, e);
 
-            NextGen.IsEnabled = true;
+            //NextGen.IsEnabled = true;
         }
 
 
@@ -144,9 +147,46 @@ namespace GenerateurMusique.Views
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Parametres fenetre = new Parametres {DataContext = _params};
+            fenetre = new Parametres(_params) {DataContext = _params};
+            fenetre.ValiderButton.Click += ParamValiderClick;
+            fenetre.AnnulerButton.Click += ParamAnnulerClick;
+
 
             fenetre.Show();
+        }
+
+        private void ParamValiderClick(object sender, RoutedEventArgs e)
+        {
+            ShowConfirm();
+        }
+
+        private void ShowConfirm()
+        {
+            string sMessageBoxText = "Si vous avez changé le nombre de notes ou le nombre d'individus, l'application va recommencer.\n Voulez-vous continuer?";
+            string sCaption = "Confirmation";
+
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNo;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    if (_params.MaxNotes != fenetre.MaxNotes ||
+                        _params.MaxIndividus != fenetre.MaxIndividus)
+                    {
+                        _vm.Gens.Clear();
+                    }
+                    fenetre.Close();
+                    break;
+            }
+        }
+
+        private void ParamAnnulerClick(object sender, RoutedEventArgs e)
+        {
+            _params = fenetre.OldParam;
+            fenetre.Close();
         }
     }
 }

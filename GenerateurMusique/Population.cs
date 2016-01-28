@@ -23,18 +23,27 @@ namespace GenerateurMusique
         }
         public short Mutarate
         {
-            get { return MAXINDIVIDUS; }
-            set { MAXINDIVIDUS = value; OnPropertyChanged(nameof(Mutarate)); }
+            get { return MUTARATE; }
+            set
+            {
+                MUTARATE = (short) (value > 100 ? 100 : value);
+
+                OnPropertyChanged(nameof(Mutarate));
+            }
         }
         public short Crossover
         {
             get { return CROSSOVER; }
-            set { CROSSOVER = value; OnPropertyChanged(nameof(Crossover)); }
+            set
+            {
+                CROSSOVER = (short)(value > 100 ? 100 : value);
+                OnPropertyChanged(nameof(Crossover));
+            }
         }
         public short MaxNotes
         {
             get { return MAXNOTES; }
-            set { MAXNOTES = value; OnPropertyChanged(nameof(MaxNotes)); }
+            set{ MAXNOTES = value; OnPropertyChanged(nameof(MaxNotes)); }
         }
 
 
@@ -47,6 +56,16 @@ namespace GenerateurMusique
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public Population Clone()
+        {
+            return new Population
+            {
+                Crossover = this.Crossover,
+                MaxIndividus = this.MaxIndividus,
+                MaxNotes = this.MaxNotes,
+                Mutarate = this.Mutarate
+            };
+        }
         // TODO: confirm + reset pop
     }
 }

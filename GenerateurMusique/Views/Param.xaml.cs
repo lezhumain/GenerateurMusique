@@ -20,9 +20,21 @@ namespace GenerateurMusique.Views
     /// </summary>
     public partial class Parametres : Window
     {
-        public Parametres()
+        public readonly Population OldParam;
+        public short MaxIndividus { get; set; }
+        public short Mutarate { get; set; }
+        public short Crossover { get; set; }
+        public short MaxNotes { get; set; }
+
+
+        public Parametres(Population oldParam)
         {
             InitializeComponent();
+
+            MaxNotes = oldParam.MaxNotes;
+            MaxIndividus = oldParam.MaxIndividus;
+            Crossover = oldParam.Crossover;
+            Mutarate = oldParam.Mutarate;
         }
 
         private new void PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -35,5 +47,6 @@ namespace GenerateurMusique.Views
             Regex regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text
             return !regex.IsMatch(text);
         }
+
     }
 }
