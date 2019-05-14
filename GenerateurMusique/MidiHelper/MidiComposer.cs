@@ -60,49 +60,67 @@ namespace GenerateurMusique.MidiHelper
                 StopPlayer();
             }
 
-            // Générateur aléatoire
-            //Random rand = new Random();
+            // Générateur aléatoire d'instrument (voir @CreateMusic(instrument, notes, filename) )
+            int instrument = GetRandom(1, 129);
 
+            // 1) Créer le fichier MIDI a partir des notes
+            MIDISong song = CreateMusic(instrument, notes, filename);
+
+            if (doPlay && filename != null)
+            {
+                // 2) Jouer un fichier MIDI
+                PlayMIDI(_strFileName);
+            }
+        }
+
+        public int[] GenerateNotes(int nbNotes)
+        {
+            int[] notes = new int[nbNotes];
+            // Chaque note est comprise entre 0 et 127 (12 correspond au type de note, fixe ici à des 1/4)
+            // L'équivalence avec les notes / octaves est disponible ici : https://andymurkin.files.wordpress.com/2012/01/midi-int-midi-note-no-chart.jpg
+            // Ici @nbNotes notes aléatoires entre 16 et 96 (pour éviter certaines notes trop aigues ou trop graves)
+            for (int i = 0; i < 16; i++)
+            {
+                int note = GetRandom(24, 96);
+                notes[i] = note;
+            }
+
+            return notes;
+        }
+
+        public MIDISong CreateMusic(int? instrument = null, int[] notes = null, string filename = null)
+        {
             // 1) Créer le fichier MIDI
             // a. Créer un fichier et une piste audio ainsi que les informations de tempo
             MIDISong song = CreateSong("Piste1");
 
             // b. Choisir un instrument entre 1 et 128 
             // Liste complète ici : http://fr.wikipedia.org/wiki/General_MIDI
-            int instrument = GetRandom(1, 129);
-            song.SetChannelInstrument(instrument);
-
-            // c. Ajouter des notes
-            // Chaque note est comprise entre 0 et 127 (12 correspond au type de note, fixe ici à des 1/4)
-            // L'équivalence avec les notes / octaves est disponible ici : https://andymurkin.files.wordpress.com/2012/01/midi-int-midi-note-no-chart.jpg
-            // Ici 16 notes aléatoire entre 16 et 96 (pour éviter certaines notes trop aigues ou trop graves)
-            for (int i = 0; i < 16; i++)
+            if (instrument == null)
             {
-                int note;
-                if (notes == null)
-                {
-                    note = GetRandom(24, 96);
-                }
-                else
-                {
-                    note = notes[i];
-                }
-                song.AddNote(note);
+                instrument = GetRandom(1, 129);
+            }
+            song.SetChannelInstrument(instrument.Value);
 
+            // generate notes if needed
+            if(notes == null)
+            {
+                notes = GenerateNotes(16);
+            }
+
+            // c. Ajouter les notes
+            for (int i = 0; i < notes.Length; i++)
+            {
+                song.AddNote(notes[i]);
             }
 
             // on écrit le fichier
-            _strFileName = WriteMIDI(song, filename);
-
-            //_songs.Add(new OldIndividu(song));
-
-            //((MainWindow)Application.Current.MainWindow).Songs.Add(_strFileName);
-
-            if (doPlay)
+            if (filename != null)
             {
-                // 2) Jouer un fichier MIDI
-                PlayMIDI(_strFileName);
+                _strFileName = WriteMIDI(song, filename);
             }
+
+            return song;
         }
 
         public void Close()

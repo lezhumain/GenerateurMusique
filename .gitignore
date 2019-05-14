@@ -1,3 +1,7 @@
 GenerateurMusique/bin/
 GenerateurMusique/obj/
+GenerateurMusiqueTest/bin/
+GenerateurMusiqueTest/obj/
 *.orig
+.vs/
+packages/

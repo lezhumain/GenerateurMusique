@@ -55,6 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MidiHelper\ImageHelper.cs" />
+    <Compile Include="MidiHelper\NoteHelper.cs" />
     <Compile Include="Model\Generation.cs" />
     <Compile Include="Controls\GenerationControl.xaml.cs">
       <DependentUpon>GenerationControl.xaml</DependentUpon>
