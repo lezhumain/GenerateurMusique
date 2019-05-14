@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,6 +74,23 @@ namespace GenerateurMusique.MidiHelper
             bmp.UnlockBits(bmpData);
 
             return rgbValues;
+        }
+
+         static public byte[] IconToBytes(Icon icon)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                icon.Save(ms);
+                return ms.ToArray();
+            }
+        }
+
+        static public Icon BytesToIcon(byte[] bytes)
+        {
+            using (MemoryStream ms = new MemoryStream(bytes))
+            {
+                return new Icon(ms);
+            }
         }
     }
 }

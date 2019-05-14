@@ -1,6 +1,7 @@
 ﻿using GenerateurMusique.MidiHelper;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -97,12 +98,34 @@ namespace GenerateurMusiqueTest
             }
         }
 
+        static void TestSaveIconToMidi()
+        {
+            try
+            {
+                string fileName = @"C:\Users\Dju\Pictures\fuck.ico";
+                string outFileName = @"C:\Users\Dju\Pictures\fuck.midi";
+                Icon ic = new Icon(fileName);
+                byte[] imgBytes = ImageHelper.IconToBytes(ic);
+                int[] notes = NoteHelper.NotesFromBytes(imgBytes);
+
+                MidiComposer composer = new MidiComposer();
+                composer.CreateAndPlayMusic(notes, outFileName, true);
+
+                Console.WriteLine("Wrote " + outFileName);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Couldn't write MIDI");
+            }
+        }
+
         static void Main(string[] args)
         {
             //TestFrequenciesToValues();
             //TestValuesToFrequencies();
             //TestGetImgBytes();
-            TestSaveImgToMidi();
+            //TestSaveImgToMidi();
+            TestSaveIconToMidi();
             Console.WriteLine("Done\nPress a key to exist.");
             Console.ReadKey();
         }
